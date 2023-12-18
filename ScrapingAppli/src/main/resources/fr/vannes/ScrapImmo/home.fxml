@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+
+<?import javafx.collections.FXCollections?>
+<?import java.lang.String?>
+<?import javafx.scene.control.cell.PropertyValueFactory?>
+<?import javafx.util.Callback?>
+<BorderPane xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fr.vannes.ScrapImmo.controller.HomeController">
+
+
+    <!-- Menu en haut -->
+    <top>
+        <MenuBar>
+            <Menu text="Fichier">
+                <items>
+                    <MenuItem text="Enregistrer dans un fichier" onAction="#handleSaveAs"/>
+                    <MenuItem text="Envoi Courriel" onAction="#handleSendEmail"/>
+                    <MenuItem text="Enregistrer dans la base de données" onAction="#handleSaveToDatabase"/>
+                    <SeparatorMenuItem />
+                    <MenuItem text="Quitter"/>
+                </items>
+            </Menu>
+            <Menu text="Paramètres">
+                <items>
+                    <MenuItem text="connexion à la BDD" onAction="#showDatabaseSettingsDialog"/>
+                </items>
+            </Menu>
+            <Menu text="Aide">
+                <items>
+                    <MenuItem text="Mode d'emploi" onAction="#showHelpPopup"/>
+                </items>
+            </Menu>
+        </MenuBar>
+    </top>
+
+
+    <!-- Contenu principal -->
+    <center>
+        <SplitPane dividerPositions="0.2" orientation="HORIZONTAL">
+            <!-- Bloc de sélection à gauche -->
+            <VBox spacing="5" prefWidth="200">
+                <Label text="Bloc de Sélection"/>
+
+                <!-- Cases à cocher pour "Seloger" et "OuestFrance" -->
+                <CheckBox fx:id="checkSeloger" text="Seloger"/>
+                <CheckBox fx:id="checkOuestFrance" text="OuestFrance"/>
+
+                <!-- Sélecteur de Ville -->
+                <ComboBox fx:id="citySelector">
+                    <items>
+                        <FXCollections fx:factory="observableArrayList">
+                            <String fx:value="Vannes"/>
+                            <String fx:value="Lorient"/>
+                            <String fx:value="Brest"/>
+                            <String fx:value="Quimper"/>
+                            <String fx:value="Saint-Brieuc"/>
+                            <String fx:value="Rennes"/>
+                        </FXCollections>
+                    </items>
+                </ComboBox>
+
+                <!-- Sélecteur de type de propriété -->
+                <ComboBox fx:id="propertyTypeSelector">
+                    <items>
+                        <FXCollections fx:factory="observableArrayList">
+                            <String fx:value="Maison"/>
+                            <String fx:value="Appartement"/>
+                            <String fx:value="Parking"/>
+                            <String fx:value="Immeuble"/>
+                        </FXCollections>
+                    </items>
+                </ComboBox>
+
+                <!-- Sélecteur de surface minimale -->
+                <HBox spacing="5">
+                    <Label text="Surface Min (m²)"/>
+                    <TextField fx:id="minSurfaceField" promptText="Min"/>
+                </HBox>
+
+                <!-- Sélecteur de surface maximale -->
+                <HBox spacing="5">
+                    <Label text="Surface Max (m²)"/>
+                    <TextField fx:id="maxSurfaceField" promptText="Max"/>
+                </HBox>
+
+                <!-- Sélecteur de prix minimal -->
+                <HBox spacing="5">
+                    <Label text="Prix Min (€)"/>
+                    <TextField fx:id="minPriceField" promptText="Min"/>
+                </HBox>
+
+                <!-- Sélecteur de prix maximal -->
+                <HBox spacing="5">
+                    <Label text="Prix Max (€)"/>
+                    <TextField fx:id="maxPriceField" promptText="Max"/>
+                </HBox>
+
+                <!-- Bouton Valider -->
+                <Button fx:id="validateButton" text="Valider" onAction="#handleValidation"/>
+            </VBox>
+
+
+
+
+            <!-- Bloc d'affichage à droite -->
+            <VBox>
+                <ProgressBar fx:id="scrapingProgressBar" prefWidth="200" />
+                <Label text="Résultats du Scraping" style="-fx-font-weight: bold; -fx-font-size: 14px;"/>
+
+                <!-- TableView avec des contraintes de taille maximale -->
+                <TableView fx:id="resultsTableView" VBox.vgrow="ALWAYS" maxWidth="2000" maxHeight="1800">
+                    <columns>
+                        <TableColumn fx:id="imageColumn" text="Image">
+                            <cellValueFactory>
+                                <PropertyValueFactory property="image" />
+                            </cellValueFactory>
+                            <prefWidth>300</prefWidth>
+                        </TableColumn>
+                        <TableColumn text="Ville">
+                            <cellValueFactory>
+                                <PropertyValueFactory property="ville" />
+                            </cellValueFactory>
+                            <prefWidth>150</prefWidth>
+                        </TableColumn>
+                        <TableColumn text="Type">
+                            <cellValueFactory>
+                                <PropertyValueFactory property="type" />
+                            </cellValueFactory>
+                            <prefWidth>350</prefWidth>
+                        </TableColumn>
+                        <TableColumn text="Prix">
+                            <cellValueFactory>
+                                <PropertyValueFactory property="prix" />
+                            </cellValueFactory>
+                        </TableColumn>
+                        <TableColumn text="Surface">
+                            <cellValueFactory>
+                                <PropertyValueFactory property="surface" />
+                            </cellValueFactory>
+                        </TableColumn>
+                        <TableColumn text="Description">
+                            <cellValueFactory>
+                                <PropertyValueFactory property="description" />
+                            </cellValueFactory>
+                        </TableColumn>
+                        <TableColumn text="URL Annonce">
+                            <cellValueFactory>
+                                <PropertyValueFactory property="annonceUrl" />
+                            </cellValueFactory>
+                            <prefWidth>200</prefWidth>
+                        </TableColumn>
+                    </columns>
+                </TableView>
+            </VBox>
+
+
+        </SplitPane>
+    </center>
+</BorderPane>
